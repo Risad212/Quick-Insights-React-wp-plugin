@@ -20,13 +20,22 @@
   *  The main plugin class
   */
 
-final class Quick_Insights{
+final class Quick_Insights {
+
+    /**
+     *  plugin version
+     * 
+     * @var string
+     */
+    const VERSION = '1.0.0';
 
     /**
      *  class construct
     */
     private function __construct() {
+        $this->define_constants();
 
+        register_activation_hook(__FILE__, [ $this, 'activate'] );
     }
 
     /**
@@ -43,6 +52,30 @@ final class Quick_Insights{
 
         return $instance;
     }
+
+    /**
+     *  Define the plugin required constants
+     * 
+     * @return void
+     */
+    public function define_constants(){
+       define( 'QUICK_INSIGHTS_VERSION', self::VERSION );
+    }
+
+    /**
+     *  do staff upon plugin acvitation
+     * 
+     * @return void
+     */
+    public function activate(){
+        $installed = get_option( 'quick_insights_installed', );
+
+        if(! $installed ){
+            update_option( 'quick_insights_installed', time() );
+        }
+        update_option('quick_insights_version', QUICK_INSIGHTS_VERSION );
+    }
+
 }
 
 /**
@@ -57,6 +90,17 @@ function quick_insights(){
 
 // kickoff plugin
 quick_insights();
+
+
+
+//======================= Border ================================
+
+
+
+
+
+
+
 
 // Enqueue React script
 function wp_react_kickoff_enqueue_scripts() {
