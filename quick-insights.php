@@ -12,6 +12,52 @@
  * Tested up to: 6.6
  */
 
+ if(! defined('ABSPATH') ){
+     exit;
+ }
+
+ /**
+  *  The main plugin class
+  */
+
+final class Quick_Insights{
+
+    /**
+     *  class construct
+    */
+    private function __construct() {
+
+    }
+
+    /**
+     *  initializes a singletone instance
+     * 
+     * @return \Quick_insights
+     */
+     public static function init(){
+       static $instance = false;
+
+        if( !$instance ){
+            $instance = new self();
+        }
+
+        return $instance;
+    }
+}
+
+/**
+ * Initializes the main plugin
+ * 
+ * @return \Quick_Insights
+ */
+
+function quick_insights(){
+    return Quick_Insights::init();
+}
+
+// kickoff plugin
+quick_insights();
+
 // Enqueue React script
 function wp_react_kickoff_enqueue_scripts() {
     // Enqueue the React JS file
@@ -104,4 +150,7 @@ function register_custom_api_endpoints() {
 add_action('rest_api_init', 'register_custom_api_endpoints');
 
 
+/**
+ *  inclue email notification file
+ */
 require_once 'inc/email-notification.php';
